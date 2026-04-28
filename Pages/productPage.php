@@ -65,7 +65,7 @@ $database=new Database();
     <button>add to cart.</button>
     <br><br>
 
-    <a href="index.php"> back to shop</a>
+    <a href="/"> back to shop</a>
 
   </div>
   <?php FooterComponent();?>

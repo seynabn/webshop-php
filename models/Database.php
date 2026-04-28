@@ -1,6 +1,8 @@
 <?php
 require_once("vendor/autoload.php");
 require_once("models/Category.php");
+require_once("models/Book.php");
+
 
 
 class Database
@@ -110,11 +112,12 @@ class Database
 
   // SORTERAR MEST POPULÄRA PRODUKTER.
  function getPopularBooks(){
-  $query = $this->pdo->query("SELECT id, genre AS category, description, title,stock FROM books order by popularityFactor Desc limit 0,10 ");
+  $query = $this->pdo->query("SELECT id, genre_id, description, title,stock FROM books order by product_popularity Desc limit 0,10 ");
   $books=$query->fetchAll(PDO::FETCH_CLASS,"book");// klassnamnet.
   return $books;
  }
 
+ //rätt
  function getAllCategories()
     {
         $query = $this->pdo->query("SELECT id, name FROM genres");
@@ -122,8 +125,26 @@ class Database
         return $genre;
     }
 
+    //rätt
+    function getCategory($id){
+      $query = $this->pdo->prepare("SELECT * FROM genres WHERE id = :id");
+      $query->execute(["id"=> $id]);
+      $query->setFetchMode(PDO::FETCH_CLASS, "Category");
+      return $query->fetch();
+    }
+
+ function getBooksForCategory($categoryId){
+     $query = $this->pdo->prepare("SELECT id ,genre_id,description, title,price,stock,
+     CONCAT(
+                    'https://dummyimage.com/450x300/000/fff&text=',
+                    REPLACE(title, ' ', '+')
+                ) AS image FROM books WHERE genre_id=:categoryId");
+        $query->execute(['categoryId' => $categoryId]);
+        $genre = $query->fetchAll(PDO::FETCH_CLASS, "Book"); // KLASSNAMNET!!!
+        return $genre;
+    }
 
 
-}
+  }
 
 ?>
