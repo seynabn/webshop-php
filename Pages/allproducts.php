@@ -1,4 +1,4 @@
-<!-- DENNA FIL HÄMTAR DATA FRÅN OBJEKTET -->
+<!-- DENNA FIL HÄMTAR ALLA BÖCKER DATA FRÅN OBJEKTET -->
 
 
 <?php
@@ -8,6 +8,7 @@ require_once("components/NavComponent.php");
 require_once("components/HeaderComponent.php");
 require_once("components/ProductComponent.php");
 require_once("components/FooterComponent.php");
+require_once("components/SortComponent.php");
 
 
 
@@ -18,10 +19,11 @@ require_once("models/Book.php");
 require_once("models/Database.php");
 
 // Skapar ett nytt Database-objekt (öppnar PDO-connection)
+$sort = $_GET["sort"] ?? "title";
+$order = $_GET["order"] ?? "asc";
+$selectedOption = $sort . '-' . $order;
 $database = new Database();
-
-$popularBooks = $database->getPopularBooks();
-
+$books = $database->getAllBooks($sort, $order);
 
 
 ?>
@@ -41,8 +43,9 @@ $popularBooks = $database->getPopularBooks();
 <!-- HEADER -->
 <!-- HEADER -->
 <?php HeaderComponent(); ?>
-<h1>populära produkter just nu.</h1>
+<h1>ALLA PRODUKTER.</h1>
 <section class="py-5">
+  <?php SortComponent($selectedOption)?>
 <div class="container px-4 px-lg-5 mt-5">
 
 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -50,7 +53,7 @@ $popularBooks = $database->getPopularBooks();
 <!-- slut här -->
 
 <!-- PRODUCTS CARDS-->
-<?php foreach ($popularBooks as $book): ?>
+<?php foreach ($books as $book): ?>
     <?php ProductComponent($book); ?>
 <?php endforeach; ?>
 

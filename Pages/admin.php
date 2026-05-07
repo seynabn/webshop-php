@@ -12,7 +12,11 @@ require_once("components/FooterComponent.php");
 $database = new Database();
 $sort = $_GET["sort"] ?? "title";
 $order = $_GET["order"] ?? "asc";
-$books = $database->getAllBooks($sort, $order);
+$page = $_GET['page'] ?? 1;
+$limit = 10;
+$offset = ($page - 1) * $limit;
+$books = $database->getAllBooks($sort, $order, $limit, $offset);
+
 
 
 
@@ -34,41 +38,51 @@ $books = $database->getAllBooks($sort, $order);
             <table class="table">
                 <thead>
                     <th>
-                        <a href="admin.php?sort=title&order=asc">
+                        <a href="admin?sort=title&order=asc">
                             <i class="bi bi-sort-up"></i>
                         </a>
                         Title
-                        <a href="admin.php?sort=title&order=desc">
+                        <a href="admin?sort=title&order=desc">
                             <i class="bi bi-sort-down"></i>
                         </a>
                     </th>
 
                     <th>
-                        <a href="admin.php?sort=price&order=asc">
+                        <a href="admin?sort=title&order=asc">
+                            <i class="bi bi-sort-up"></i>
+                        </a>
+                        Description
+                        <a href="admin?sort=title&order=desc">
+                            <i class="bi bi-sort-down"></i>
+                        </a>
+                    </th>
+
+                    <th>
+                        <a href="admin?sort=price&order=asc">
                             <i class="bi bi-sort-up"></i>
                         </a>
                         Price
-                        <a href="admin.php?sort=price&order=desc">
+                        <a href="admin?sort=price&order=desc">
                             <i class="bi bi-sort-down"></i>
                         </a>
                     </th>
 
                     <th>
-                        <a href="admin.php?sort=stock&order=asc">
+                        <a href="admin?sort=stock&order=asc">
                             <i class="bi bi-sort-up"></i>
                         </a>
                         Stock
-                        <a href="admin.php?sort=stock&order=desc">
+                        <a href="admin?sort=stock&order=desc">
                             <i class="bi bi-sort-down"></i>
                         </a>
                     </th>
 
                     <th>
-                        <a href="admin.php?sort=category&order=asc">
+                        <a href="admin?sort=category&order=asc">
                             <i class="bi bi-sort-up"></i>
                         </a>
                         Genre
-                        <a href="admin.php?sort=category&order=desc">
+                        <a href="admin?sort=category&order=desc">
                             <i class="bi bi-sort-down"></i>
                         </a>
                     </th>
@@ -78,20 +92,31 @@ $books = $database->getAllBooks($sort, $order);
                     <?php foreach ($books as $book): ?>
                         <tr>
                             <td><?php echo $book->title; ?></td>
+                            <td><?php echo $book->description; ?></td>
                             <td><?php echo $book->price; ?></td>
-                             <td><?php echo $book->stock; ?></td>
                             <td><?php echo $book->genre; ?></td>
-                          
+                            <td><?php echo $book->stock; ?></td>
+
+
                             <td>
-                                <a href="edit.php?id=<?= $book->id ?>">Edit</a>
-                                <a href="delete.php?id=<?= $book->id ?>">Delete</a>
+                                <a href="/admin/edit?id=<?php echo $book->id ?>" class="btn btn-primary mb-1">EDIT</a>
+                                <a href="/admin/new?id=<?php echo $book->id ?>" class="btn btn-primary mt-1">CREATE</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
-                    
+
                 </tbody>
             </table>
         </div>
+        	<div>
+	    <a href="?page=<?php echo $page - 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">⬅️ Prev</a>
+	
+	    <span>Sida <?php echo $page; ?></span>
+	
+	    <a href="?page=<?php echo $page + 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">Next ➡️</a>
+	</div>
+	
+
     </section>
     <!-- Footer-->
     <?php FooterComponent(); ?>

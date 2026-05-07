@@ -18,7 +18,7 @@ function ProductComponent($book)
 
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                 <div class="text-center">
-                    <a class="btn btn-outline-dark mt-auto" href="productPage.php?id=<?php echo $book->id; ?>">
+                    <a class="btn btn-outline-dark mt-auto" href="productPage?id=<?php echo $book->id; ?>">
                         View options
                     </a>
                 </div>

@@ -4,6 +4,7 @@ function NavComponent()
 {
   $database = new Database();
   $categories = $database->getAllCategories();
+ 
   $q = $_GET["q"] ?? "";
 
 
@@ -19,10 +20,11 @@ function NavComponent()
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+     <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
 
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-          <li class="nav-item dropdown">
+
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown text-center">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kategorier</a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/allproducts">All Products</a></li>
@@ -50,13 +52,12 @@ function NavComponent()
 
         </ul>
 
-        <form method="GET" action="search">
-          search:
-          <input type="text" name="q" class="form-control" placeholder="..sök efter bok">
+        <!-- SEARCH -->
+  <form method="GET" action="search" class="d-flex justify-content-center my-2">
+    <input type="text" name="q" class="form-control" placeholder="Sök efter bok">
+  </form>
 
-        </form>
-
-        <form class="d-flex">
+      <form class="d-flex justify-content-center">
 
           <button class="btn btn-outline-dark" type="button">
             <i class="bi-cart-fill me-1"></i>

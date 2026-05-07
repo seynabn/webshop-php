@@ -85,6 +85,29 @@
   box-sizing: border-box;
 }
 
+/* bild header */
+.hero-header {
+    background-image: linear-gradient(
+        rgba(199, 94, 94, 0.5), 
+        rgba(150, 117, 117, 0.5)
+    ),
+    url('/public/bookheader.jpeg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    height: 400px;
+
+    display: flex;
+    justify-content: center; /* centrerar horisontellt */
+    align-items: center;     /* centrerar vertikalt */
+
+    text-align: center;
+    color: white;
+}
+
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: smooth;
