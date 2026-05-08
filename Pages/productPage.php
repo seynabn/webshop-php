@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once("models/Book.php");
 require_once("models/Database.php");
 require_once("components/HeadComponent.php");

@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once("models/Book.php");
 require_once("models/Database.php");
 
@@ -10,6 +11,10 @@ require_once("components/FooterComponent.php");
 
 
 $database = new Database();
+if (!$database->getUsersDatabase()->getAuth()->isLoggedIn()) {
+    header("Location: /AccountLogIn.php");
+    exit;
+}
 $sort = $_GET["sort"] ?? "title";
 $order = $_GET["order"] ?? "asc";
 $page = $_GET['page'] ?? 1;

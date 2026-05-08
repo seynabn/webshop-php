@@ -42,6 +42,13 @@ $router->addRoute("/allproducts", function () {
 require_once(__DIR__ . "/Pages/allproducts.php");
 });
 
+$router->addRoute("/accountlogin", function () {
+require_once(__DIR__ . "/Pages/AccountLogIn.php");
+});
+
+$router->addRoute('/logout', function () {
+    require_once(__DIR__ . "/Pages/LogOut.php");
+});
 
 $router->dispatch();
 

@@ -2,6 +2,7 @@
 
 
 <?php
+ob_start();
 // Hämtar header och product componenterna.
 require_once("components/HeadComponent.php");
 require_once("components/NavComponent.php");

@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once("models/Category.php");
 require_once("models/Database.php");
 require_once("components/ProductComponent.php");

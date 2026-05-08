@@ -2,6 +2,7 @@
 require_once("vendor/autoload.php");
 require_once("models/Category.php");
 require_once("models/Book.php");
+require_once("models/UserDatabase.php");
 
 
 
@@ -10,6 +11,13 @@ class Database
   public $pdo; // HÅLLER DATABASKOPPLINGEN - PHP DATA OBJECTS 
   // MAN ANVÄNDER METODER SOM: QUERY() OCH PREPARE() FÖR ATT INTERAGERA MED DATABASEN.
 
+  // INLOGGNING FUNKTIONEN.
+   private $usersDatabase;
+  function getUsersDatabase()
+  {
+    return $this->usersDatabase;
+  }
+  //........
   function __construct()
   {
     //LADDA .ENV-FILEN
@@ -29,6 +37,11 @@ class Database
 
     // SKAPAR PDO-CONNECTION (KOPPLAR TILL DATABASEN)
     $this->pdo = new PDO($dsn, $user, $pass);
+
+    // INLOGGNING 
+     $this->usersDatabase = new UserDatabase($this->pdo);
+    $this->usersDatabase->setupUsers();
+    $this->usersDatabase->seedUsers();
   }
 
   function getAllBooks($sort = "title", $order = "asc", $limit = 10, $offset = 0)
@@ -234,6 +247,8 @@ $query->execute();
     ]);
 
   }
+
+ 
 
 }
 

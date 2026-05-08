@@ -3,6 +3,7 @@ require_once("models/Database.php");
 function NavComponent()
 {
   $database = new Database();
+  $auth = $database->getUsersDatabase()->getAuth();
   $categories = $database->getAllCategories();
  
   $q = $_GET["q"] ?? "";
@@ -44,7 +45,25 @@ function NavComponent()
 
           </li>
 
-          <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
+         <?php if ($auth->isLoggedIn()): ?>
+
+    <li class="nav-item">
+        <span class="nav-link">
+            Konto: <?php echo $auth->getEmail(); ?>
+        </span>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+    </li>
+
+<?php else: ?>
+
+    <li class="nav-item">
+        <a class="nav-link" href="/accountlogin">Login</a>
+    </li>
+
+<?php endif; ?>
           <li class="nav-item"><a class="nav-link" href="#">Create account</a></li>
 
 
