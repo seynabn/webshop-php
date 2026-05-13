@@ -52,9 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
+    <?php NavComponent(); ?>
     <?php HeaderComponent(); ?>
 
-    <?php NavComponent(); ?>
+
 
     <?php LogInComponent($message); ?>
 

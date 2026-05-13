@@ -24,6 +24,8 @@ $database = new Database();
 $popularBooks = $database->getPopularBooks();
 
 
+// $cart=new cart($database,session_id());
+
 
 ?>
 

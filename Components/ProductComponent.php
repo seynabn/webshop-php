@@ -1,7 +1,7 @@
 <?php
 function ProductComponent($book)
 {
-?>
+    ?>
     <div class="col mb-5">
         <div class="card h-100">
 
@@ -17,15 +17,30 @@ function ProductComponent($book)
             </div>
 
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center">
-                    <a class="btn btn-outline-dark mt-auto" href="productPage?id=<?php echo $book->id; ?>">
-                        View options
+                <div class="d-flex justify-content-center gap-2">
+
+
+
+
+                    <a class="btn btn-outline-dark" href="addtocart?id=<?php echo $book->id; ?>">
+                        quick add!
                     </a>
+
+
+
+
+
+
+                    <a class="btn btn-dark " href="productPage?id=<?php echo $book->id; ?>">
+                        See Book! </a>
+
+
+
                 </div>
             </div>
 
         </div>
     </div>
-<?php
+    <?php
 }
 ?>

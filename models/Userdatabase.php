@@ -24,6 +24,11 @@ class UserDatabase {
             $userId = $this->auth->admin()->createUser("seynab.nur@hotmail.com", "Hejsan123", "seynab.nur@hotmail.com");    
         }
     }
+     function addUserDetails($id, $streetaddress, $name, $postalCode, $city){
+            $query = $this->pdo->prepare("INSERT INTO UserDetails (id, streetaddress, name, postalCode, city) VALUES (:id, :streetaddress, :name, :postalCode, :city)");
+            $query->execute(["id"=>$id, "streetaddress"=>$streetaddress, 
+                    "name"=>$name, "postalCode"=>$postalCode, "city"=>$city]);
+        }
     
 }
  
