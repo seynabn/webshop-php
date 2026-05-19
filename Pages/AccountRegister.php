@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 
 ob_start(); // för cookies och sessions.
 
@@ -34,41 +32,41 @@ $city = "";
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Dom har tryckt på knappen, validera och registrera
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $passwordRepeat = $_POST['passwordRepeat'];
-    $name = $_POST['name'];
-    $streetaddress = $_POST['street'];
-    $postalCode = $_POST['postal'];
-    $city = $_POST['city'];
+  // Dom har tryckt på knappen, validera och registrera
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+  $passwordRepeat = $_POST['passwordRepeat'];
+  $name = $_POST['name'];
+  $streetaddress = $_POST['street'];
+  $postalCode = $_POST['postal'];
+  $city = $_POST['city'];
 
-    // todo add 
-    $v->field('email')->required()->email();
-    $v->field('password')->required()->min_len(8)->max_len(20);
-    $v->field('passwordRepeat')->equals($password);
+  // todo add 
+  $v->field('email')->required()->email();
+  $v->field('password')->required()->min_len(8)->max_len(20);
+  $v->field('passwordRepeat')->equals($password);
 
-    $v->field('name')->required()->min_len(3)->max_len(50);
-    $v->field('street')->required()->min_len(3)->max_len(50);
-    $v->field('postal')->required()->max_len(10);
-    $v->field('city')->required()->max_len(50);
+  $v->field('name')->required()->min_len(3)->max_len(50);
+  $v->field('street')->required()->min_len(3)->max_len(50);
+  $v->field('postal')->required()->max_len(10);
+  $v->field('city')->required()->max_len(50);
 
-    //
-    if ($v->is_valid()) {
-        try {
-            $userid = $database->getUsersDatabase()->getAuth()->register($email, $password, $email);
-            // insert into user details table with $userid and other details
-            $database->getUsersDatabase()->addUserDetails($userid, $name, $streetaddress, $postalCode, $city);
-            header("Location: /accountlogin");
-            exit;
-        } catch (\Delight\Auth\UserAlreadyExistsException $e) {
-            $message = "User already exists";
-        } catch (\Delight\Auth\InvalidEmailException $e) {
-            $message = "Invalid email";
-        } catch (\Delight\Auth\TooManyRequestsException $e) {
-            $message = "Too many requests, please try again later";
-        }
+  //
+  if ($v->is_valid()) {
+    try {
+      $userid = $database->getUsersDatabase()->getAuth()->register($email, $password, $email);
+      // insert into user details table with $userid and other details
+      $database->getUsersDatabase()->addUserDetails($userid, $name, $streetaddress, $postalCode, $city);
+      header("Location: /accountlogin");
+      exit;
+    } catch (\Delight\Auth\UserAlreadyExistsException $e) {
+      $message = "User already exists";
+    } catch (\Delight\Auth\InvalidEmailException $e) {
+      $message = "Invalid email";
+    } catch (\Delight\Auth\TooManyRequestsException $e) {
+      $message = "Too many requests, please try again later";
     }
+  }
 }
 
 ?>
@@ -81,23 +79,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html lang="en">
 
-<?php HeadComponent()?>
+<?php HeadComponent() ?>
+
 <body>
-   <?php NavComponent(); ?>
-  <?php HeaderComponent()?>
+  <?php NavComponent(); ?>
+  <?php HeaderComponent() ?>
 
-  
 
-    <?php RegisterComponent($email,
+
+  <?php RegisterComponent(
+    $email,
     $password,
     $passwordRepeat,
     $name,
     $streetaddress,
     $postalCode,
     $city,
-    $v); ?>
+    $v
+  ); ?>
 
-    <?php FooterComponent(); ?>
-  
+  <?php FooterComponent(); ?>
+
 </body>
+
 </html>

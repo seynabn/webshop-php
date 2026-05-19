@@ -23,6 +23,9 @@ $selectedOption = $sort . '-' . $order;
 $searchWord = $_GET["q"] ?? "";
 $database = new Database();
 $books = $database->searchBooks($searchWord, $sort, $order, $limit, $offset);
+$totalBooks = $database->countSearchBooks($searchWord);
+
+$totalPages = ceil($totalBooks / $limit);
 
 
 ?>
@@ -50,18 +53,52 @@ $books = $database->searchBooks($searchWord, $sort, $order, $limit, $offset);
                 <!-- slut här -->
 
                 <!-- PRODUCTS CARDS-->
-                <?php foreach ($books as $book): ?>
-                    <?php ProductComponent($book); ?>
-                <?php endforeach; ?>
+               <?php if(count($books) > 0): ?>
+
+    <?php foreach ($books as $book): ?>
+        <?php ProductComponent($book); ?>
+    <?php endforeach; ?>
+
+<?php else: ?>
+
+    <div class="text-center">
+        <h3>Inga böcker hittades..</h3>
+
+        <p>
+            Din sökning på 
+            <strong><?php echo htmlspecialchars($searchWord); ?></strong>
+            gav inga resultat.
+        </p>
+    </div>
+
+<?php endif; ?>
 
             </div>
         </div>
-        	<div>
-	    <a href="?page=<?php echo $page - 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>&q=<?php echo urlencode($searchWord); ?>">föregånde</a>
-	
-	    <span>Sida <?php echo $page; ?></span>
-	
-	  <a href="?page=<?php echo $page + 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>&q=<?php echo urlencode($searchWord); ?>">nästa</a>
+        	<div class="d-flex justify-content-center gap-3 mt-4">
+
+    <?php if($page > 1): ?>
+
+        <a class="btn btn-dark"
+           href="?page=<?php echo $page - 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>&q=<?php echo urlencode($searchWord); ?>">
+            ⬅️ Föregående
+        </a>
+
+    <?php endif; ?>
+
+    <span class="align-self-center">
+        Sida <?php echo $page; ?> av <?php echo $totalPages; ?>
+    </span>
+
+    <?php if($page < $totalPages): ?>
+
+        <a class="btn btn-dark"
+           href="?page=<?php echo $page + 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>&q=<?php echo urlencode($searchWord); ?>">
+            Nästa ➡️
+        </a>
+
+    <?php endif; ?>
+
 </div>
     </section>
 

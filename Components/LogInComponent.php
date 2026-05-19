@@ -18,11 +18,11 @@ function LogInComponent($message = "")
 
                         <h2>
                             <i class="fa fa-user-circle"></i>
-                            Login
+                            Logga in
                         </h2>
 
                         <p class="text-muted">
-                            Welcome back
+                            Välkommen tillbaka!
                         </p>
 
                     </div>
@@ -43,7 +43,7 @@ function LogInComponent($message = "")
                                 name="email"
                                 class="form-control form-control-lg"
                                 type="email"
-                                placeholder="Enter Your Email"
+                                placeholder="Fyll i din Email"
                             >
 
                         </div>
@@ -54,12 +54,12 @@ function LogInComponent($message = "")
                                 name="password"
                                 class="form-control form-control-lg"
                                 type="password"
-                                placeholder="Enter Your Password"
+                                placeholder="Fyll i lösenord"
                             >
 
                         </div>
 
-                        <button class="btn btn-warning btn-lg w-100">
+                        <button class="btn btn-light btn-dark w-100">
 
                             <i class="fa fa-sign-in"></i>
                             Login

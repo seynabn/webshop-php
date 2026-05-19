@@ -79,9 +79,9 @@ $database=new Database();
 
         <!-- BUTTON -->
         <div class="d-flex">
-          <button class="btn btn-dark flex-shrink-0">
-            🛒 Lägg i varukorg
-          </button>
+             <a class="btn btn-dark flex-shrink-0" href="addtocart?id=<?php echo $book->id; ?>">
+                        Add to cart!
+                    </a>
         </div>
 
         <!-- BACK -->
@@ -94,8 +94,9 @@ $database=new Database();
 
   </div>
 </section>
+ <div class="d-flex justify-content-center gap-3 mt-4">
 <h2 class="fw-bolder mb-4">Liknande produkter</h2>
-
+</div>
 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4">
   <?php foreach ($database->getPopularBooks() as $book): ?>
     <?php ProductComponent($book); ?>

@@ -11,19 +11,19 @@ function ProductComponent($book)
                 <div class="text-center">
 
                     <h5 class="fw-bolder"><?php echo $book->title; ?></h5>
-                    <div>SEK <?php echo $book->price; ?></div>
+                    <div><?php echo $book->price; ?>kr</div>
 
                 </div>
             </div>
 
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="d-flex justify-content-center gap-2">
+            <div class="card-footer p-2 pt-0 border-top-0 bg-transparent">
+                <div class="d-flex justify-content-center gap-1">
 
 
 
 
                     <a class="btn btn-outline-dark" href="addtocart?id=<?php echo $book->id; ?>">
-                        quick add!
+                        Lägg i varukorg!
                     </a>
 
 
@@ -32,7 +32,7 @@ function ProductComponent($book)
 
 
                     <a class="btn btn-dark " href="productPage?id=<?php echo $book->id; ?>">
-                        See Book! </a>
+                        Se mer! </a>
 
 
 

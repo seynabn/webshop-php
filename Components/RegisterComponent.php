@@ -1,4 +1,4 @@
-```php
+
 <?php
 
 function LogInComponent($message = "")
@@ -82,11 +82,9 @@ function LogInComponent($message = "")
 <?php
 }
 ?>
-```
 
----
 
-```php
+
 <?php
 
 function RegisterComponent(
@@ -117,11 +115,11 @@ function RegisterComponent(
 
                         <h2>
                             <i class="fa fa-user-plus"></i>
-                            Register
+                            Registrering
                         </h2>
 
                         <p class="text-muted">
-                            Create a new account
+                            Skapa ett nytt konto!
                         </p>
 
                     </div>
@@ -143,7 +141,7 @@ function RegisterComponent(
                                 name="email"
                                 class="form-control form-control-lg"
                                 type="email"
-                                placeholder="Enter Your Email"
+                                placeholder="skriv in email..."
                             >
 
                             <small class="text-danger">
@@ -158,7 +156,7 @@ function RegisterComponent(
                                 name="password"
                                 class="form-control form-control-lg"
                                 type="password"
-                                placeholder="Enter Your Password"
+                                placeholder="Skapa ett lösenord..."
                             >
 
                             <small class="text-danger">
@@ -173,7 +171,7 @@ function RegisterComponent(
                                 name="passwordRepeat"
                                 class="form-control form-control-lg"
                                 type="password"
-                                placeholder="Repeat Password"
+                                placeholder="Repetera lösenord..."
                             >
 
                             <small class="text-danger">
@@ -189,7 +187,7 @@ function RegisterComponent(
                                 name="name"
                                 class="form-control form-control-lg"
                                 type="text"
-                                placeholder="Enter Your Name"
+                                placeholder="Fyll i namn..."
                             >
 
                             <small class="text-danger">
@@ -205,7 +203,7 @@ function RegisterComponent(
                                 name="street"
                                 class="form-control form-control-lg"
                                 type="text"
-                                placeholder="Street Address"
+                                placeholder="Fyll i adress..."
                             >
 
                             <small class="text-danger">
@@ -221,7 +219,7 @@ function RegisterComponent(
                                 name="postal"
                                 class="form-control form-control-lg"
                                 type="text"
-                                placeholder="Postal Code"
+                                placeholder=" Postkod..."
                             >
 
                             <small class="text-danger">
@@ -237,7 +235,7 @@ function RegisterComponent(
                                 name="city"
                                 class="form-control form-control-lg"
                                 type="text"
-                                placeholder="City"
+                                placeholder="Stad..."
                             >
 
                             <small class="text-danger">
@@ -246,10 +244,10 @@ function RegisterComponent(
 
                         </div>
 
-                        <button class="btn btn-danger btn-lg w-100">
+                        <button class="btn btn-light btn-dark w-100">
 
                             <i class="fa fa-user-plus"></i>
-                            Register
+                            Skapa konto
 
                         </button>
 
@@ -268,4 +266,4 @@ function RegisterComponent(
 <?php
 }
 ?>
-```
+

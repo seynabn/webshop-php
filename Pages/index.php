@@ -44,7 +44,9 @@ $popularBooks = $database->getPopularBooks();
 <!-- HEADER -->
 <!-- HEADER -->
 <?php HeaderComponent(); ?>
-<h1>populära produkter just nu.</h1>
+ <div class="d-flex justify-content-center gap-3 mt-4">
+<h1>Populära böcker just nu!</h1>
+</div>
 <section class="py-5">
 <div class="container px-4 px-lg-5 mt-5">
 

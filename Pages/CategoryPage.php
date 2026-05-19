@@ -41,8 +41,12 @@ $books = $database->getBooksForCategory($categoryId, $sort, $order, $limit, $off
     <!-- HEADER -->
     <!-- HEADER -->
     <?php HeaderComponent(); ?>
+     <div class="d-flex justify-content-center gap-3 mt-4">
     <h1><?php echo $theCategory->name ?></h1>
+   </div>
+    
     <?php SortComponent($selectedOption); ?>
+
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
 
@@ -57,15 +61,22 @@ $books = $database->getBooksForCategory($categoryId, $sort, $order, $limit, $off
 
             </div>
 
-            <div>
-    <a href="?id=<?php echo $categoryId; ?>&page=<?php echo $page - 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">
-        ⬅️ Prev
+            <div class="d-flex justify-content-center gap-3 mt-4">
+
+            <?php if($page > 1): ?>
+    <a class="btn btn-dark" 
+    href="?id=<?php echo $categoryId; ?>&page=<?php echo $page - 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">
+        ⬅️ Föregånde
     </a>
+    <?php endif; ?>
 
-    <span>Sida <?php echo $page; ?></span>
+<span class="align-self-center">
+    Sida <?php echo $page; ?>
+</span>
 
-    <a href="?id=<?php echo $categoryId; ?>&page=<?php echo $page + 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">
-        Next ➡️
+    <a class="btn btn-dark"
+     href="?id=<?php echo $categoryId; ?>&page=<?php echo $page + 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">
+        Nästa ➡️
     </a>
 </div>
         </div>
@@ -77,5 +88,6 @@ $books = $database->getBooksForCategory($categoryId, $sort, $order, $limit, $off
     ?>
 
 </body>
-
 </html>
+
+

@@ -18,7 +18,7 @@ function NavComponent()
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container px-4 px-lg-5">
-      <a class="navbar-brand" href="/">Book Shoppen</a>
+      <a class="navbar-brand" href="/">Bok Shoppen</a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span>
@@ -31,7 +31,7 @@ function NavComponent()
           <li class="nav-item dropdown text-center">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Kategorier</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/allproducts">All Products</a></li>
+              <li><a class="dropdown-item" href="/allproducts">Alla Böcker</a></li>
               <?php foreach ($categories as $genres) {
                 // länken går till våran category.php och id:et vill
                 ?>
@@ -56,17 +56,17 @@ function NavComponent()
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="/logout">Logout</a>
+              <a class="nav-link" href="/logout">Logga Ut</a>
             </li>
 
           <?php else: ?>
 
             <li class="nav-item">
-              <a class="nav-link" href="/accountlogin">Login</a>
+              <a class="nav-link" href="/accountlogin">Logga In</a>
             </li>
 
           <?php endif; ?>
-          <li class="nav-item"><a class="nav-link" href="/accountregister">Create account</a></li>
+          <li class="nav-item"><a class="nav-link" href="/accountregister">Skapa konto</a></li>
 
 
 
@@ -84,7 +84,7 @@ function NavComponent()
             <i class="bi-cart-fill me-1"><span class="badge bg-dark text-white ms-1 rounded-pill">
                <?php echo $cart->getItemsCount(); ?>
             </span></i>
-             <a class="btn btn-outline-dark" href="/viewcart">Cart</a>
+             <a class="btn btn-outline-dark" href="/viewcart">Varukorg</a>
            
           </button>
         </form>

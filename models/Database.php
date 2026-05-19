@@ -13,7 +13,7 @@ class Database
   // MAN ANVÄNDER METODER SOM: QUERY() OCH PREPARE() FÖR ATT INTERAGERA MED DATABASEN.
 
   // INLOGGNING FUNKTIONEN.
-   private $usersDatabase;
+  private $usersDatabase;
   function getUsersDatabase()
   {
     return $this->usersDatabase;
@@ -40,7 +40,7 @@ class Database
     $this->pdo = new PDO($dsn, $user, $pass);
 
     // INLOGGNING 
-     $this->usersDatabase = new UserDatabase($this->pdo);
+    $this->usersDatabase = new UserDatabase($this->pdo);
     $this->usersDatabase->setupUsers();
     $this->usersDatabase->seedUsers();
   }
@@ -77,7 +77,7 @@ class Database
         ");
     $query->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
     $query->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
-        $query->execute();
+    $query->execute();
 
 
     // SKILLANDEN MELLAN QUERY OCH PREPARE:
@@ -128,7 +128,7 @@ class Database
     $sort = in_array($sort, $allowedSort) ? $sort : 'title';
     $order = in_array($order, $allowedOrder) ? $order : 'asc';
 
-   $query = $this->pdo->prepare("
+    $query = $this->pdo->prepare("
 SELECT 
 id,
 title,
@@ -146,23 +146,38 @@ ORDER BY $sort $order
 LIMIT :limit OFFSET :offset
 ");
 
-// bind alla parametrar
-$query->bindValue(':q', "%$q%", PDO::PARAM_STR);
-$query->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-$query->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    // bind alla parametrar
+    $query->bindValue(':q', "%$q%", PDO::PARAM_STR);
+    $query->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+    $query->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
 
-$query->execute();
+    $query->execute();
 
     return $query->fetchAll(PDO::FETCH_CLASS, "Book");
   }
 
+  function countSearchBooks($q)
+{
+    $query = $this->pdo->prepare("
+        SELECT COUNT(*) 
+        FROM books
+        WHERE title LIKE :q 
+        OR author LIKE :q
+    ");
+
+    $query->execute([
+        'q' => "%$q%"
+    ]);
+
+    return $query->fetchColumn();
+}
 
 
 
   // SORTERAR MEST POPULÄRA PRODUKTER.
   function getPopularBooks()
   {
-    $query = $this->pdo->query("SELECT id, genre_id, description, title,stock,
+    $query = $this->pdo->query("SELECT id, genre_id, description, title,stock,price,
     CONCAT(
                 'https://dummyimage.com/450x300/000/fff&text=',
                 REPLACE(title, ' ', '+')
@@ -190,7 +205,7 @@ $query->execute();
     return $query->fetch();
   }
 
-  function getBooksForCategory($categoryId, $sort, $order,  $limit = 10, $offset = 0)
+  function getBooksForCategory($categoryId, $sort, $order, $limit = 10, $offset = 0)
   {
     // sql injection - vid sort/order by
     $allowedSort = ['title', 'price'];
@@ -206,10 +221,10 @@ $query->execute();
                 ) AS image FROM books WHERE genre_id=:categoryId ORDER BY $sort $order LIMIT :limit OFFSET :offset
            ");
 
-          // bind ALLA parametrar
-    $query->bindValue(':categoryId', (int)$categoryId, PDO::PARAM_INT);
-    $query->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-    $query->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    // bind ALLA parametrar
+    $query->bindValue(':categoryId', (int) $categoryId, PDO::PARAM_INT);
+    $query->bindValue(':limit', (int) $limit, PDO::PARAM_INT);
+    $query->bindValue(':offset', (int) $offset, PDO::PARAM_INT);
 
     $query->execute();
 
@@ -249,41 +264,43 @@ $query->execute();
 
   }
 
- function getCartItems($userId, $sessionId){
-            if($userId != null ){
-                $query = $this->pdo->prepare("UPDATE CartItem SET userId=:userId WHERE userId IS NULL AND  sessionId = :sessionId");
-                $query->execute(['sessionId' => $sessionId, 'userId' => $userId]);
-            }
+  function getCartItems($userId, $sessionId)
+  {
+    if ($userId != null) {
+      $query = $this->pdo->prepare("UPDATE CartItem SET userId=:userId WHERE userId IS NULL AND  sessionId = :sessionId");
+      $query->execute(['sessionId' => $sessionId, 'userId' => $userId]);
+    }
 
-            $query = $this->pdo->prepare("SELECT CartItem.Id as id, CartItem.productId, CartItem.quantity, books.title as productName, books.price as productPrice, books.price * CartItem.quantity as rowPrice     FROM CartItem  JOIN books ON books.id = CartItem.productId WHERE userId=:userId or sessionId = :sessionId");
-            $query->execute(['sessionId' => $sessionId, 'userId' => $userId]);
+    $query = $this->pdo->prepare("SELECT CartItem.Id as id, CartItem.productId, CartItem.quantity, books.title as productName, books.price as productPrice, books.price * CartItem.quantity as rowPrice     FROM CartItem  JOIN books ON books.id = CartItem.productId WHERE userId=:userId or sessionId = :sessionId");
+    $query->execute(['sessionId' => $sessionId, 'userId' => $userId]);
 
 
-            return $query->fetchAll(PDO::FETCH_CLASS, 'CartItem');
-        }
+    return $query->fetchAll(PDO::FETCH_CLASS, 'CartItem');
+  }
 
-        function convertSessionToUser($session_id, $userId, $newSessionId){
-            $query = $this->pdo->prepare("UPDATE CartItem SET userId=:userId, sessionId=:newSessionId WHERE sessionId = :sessionId");
-            $query->execute(['sessionId' => $session_id, 'userId' => $userId, 'newSessionId' => $newSessionId]);
-        }
+  function convertSessionToUser($session_id, $userId, $newSessionId)
+  {
+    $query = $this->pdo->prepare("UPDATE CartItem SET userId=:userId, sessionId=:newSessionId WHERE sessionId = :sessionId");
+    $query->execute(['sessionId' => $session_id, 'userId' => $userId, 'newSessionId' => $newSessionId]);
+  }
 
-        function updateCartItem($userId, $sessionId,$productId, $quantity){
-            if($quantity <= 0){
-                $query = $this->pdo->prepare("DELETE FROM CartItem WHERE (userId=:userId or sessionId=:sessionId) AND productId = :productId");
-                $query->execute([ 'userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId]);
-                return;
-            }
-            $query = $this->pdo->prepare("SELECT * FROM CartItem  WHERE (userId=:userId or sessionId=:sessionId) AND productId = :productId");
-            $query->execute([ 'userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId]);
-            if($query->rowCount() == 0){
-                $query = $this->pdo->prepare("INSERT INTO CartItem (productId, quantity, sessionId, userId) VALUES (:productId, :quantity, :sessionId, :userId)");
-                $query->execute([ 'userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId, 'quantity' => $quantity]);
-            }
-            else{
-                $query = $this->pdo->prepare("UPDATE CartItem SET quantity = :quantity WHERE (userId=:userId or sessionId=:sessionId) AND productId = :productId");
-                $query->execute([ 'userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId, 'quantity' => $quantity]);
-            }
-        }
+  function updateCartItem($userId, $sessionId, $productId, $quantity)
+  {
+    if ($quantity <= 0) {
+      $query = $this->pdo->prepare("DELETE FROM CartItem WHERE (userId=:userId or sessionId=:sessionId) AND productId = :productId");
+      $query->execute(['userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId]);
+      return;
+    }
+    $query = $this->pdo->prepare("SELECT * FROM CartItem  WHERE (userId=:userId or sessionId=:sessionId) AND productId = :productId");
+    $query->execute(['userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId]);
+    if ($query->rowCount() == 0) {
+      $query = $this->pdo->prepare("INSERT INTO CartItem (productId, quantity, sessionId, userId) VALUES (:productId, :quantity, :sessionId, :userId)");
+      $query->execute(['userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId, 'quantity' => $quantity]);
+    } else {
+      $query = $this->pdo->prepare("UPDATE CartItem SET quantity = :quantity WHERE (userId=:userId or sessionId=:sessionId) AND productId = :productId");
+      $query->execute(['userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId, 'quantity' => $quantity]);
+    }
+  }
 
 
 
