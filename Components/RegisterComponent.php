@@ -141,7 +141,7 @@ function RegisterComponent(
                                 name="email"
                                 class="form-control form-control-lg"
                                 type="email"
-                                placeholder="skriv in email..."
+                                placeholder="Skriv in email..."
                             >
 
                             <small class="text-danger">

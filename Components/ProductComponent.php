@@ -4,6 +4,9 @@ function ProductComponent($book)
     ?>
     <div class="col mb-5">
         <div class="card h-100">
+              <a class="text-decoration-none text-black" href="productPage?id=<?php echo $book->id; ?>">
+                       
+
 
             <img class="card-img-top" src="<?php echo $book->image; ?>" alt="<?php echo $book->title; ?>" />
 
@@ -31,14 +34,13 @@ function ProductComponent($book)
 
 
 
-                    <a class="btn btn-dark " href="productPage?id=<?php echo $book->id; ?>">
-                        Se mer! </a>
+        
 
 
 
                 </div>
             </div>
-
+ </a>
         </div>
     </div>
     <?php

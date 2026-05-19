@@ -75,18 +75,21 @@ function NavComponent()
 
         <!-- SEARCH -->
         <form method="GET" action="search" class="d-flex justify-content-center my-2">
-          <input type="text" name="q" class="form-control" placeholder="Sök efter bok">
+          <input type="text" name="q" class="form-control" placeholder="Sök efter bok...">
         </form>
 
-        <form class="d-flex justify-content-center">
+        <form class="d-flex justify-content-center m-2">
+              <a class="btn btn-outline-dark " href="/viewcart">
+                Varukorg
 
-          <button class="btn btn-outline-dark" type="button">
+          
             <i class="bi-cart-fill me-1"><span class="badge bg-dark text-white ms-1 rounded-pill">
                <?php echo $cart->getItemsCount(); ?>
             </span></i>
-             <a class="btn btn-outline-dark" href="/viewcart">Varukorg</a>
+       
            
-          </button>
+    
+            </a>
         </form>
 
       </div>

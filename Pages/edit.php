@@ -85,7 +85,7 @@ echo "du klickade på en product: " . $id;
 
         <div class="card shadow border-0 rounded-4 p-4">
 
-          <h1 class="fw-bold mb-4 text-center">Edit Product</h1>
+          <h1 class="fw-bold mb-4 text-center">Ändra Produkt</h1>
 
           <div class="text-center mb-4">
             <img src="<?php echo $book->image ?>" class="img-fluid rounded" style="max-height:300px;">
@@ -94,7 +94,7 @@ echo "du klickade på en product: " . $id;
           <form method="POST">
 
             <div class="mb-3">
-              <label for="title" class="form-label">Title</label>
+              <label for="title" class="form-label">Titel</label>
               <input type="text" class="form-control" id="title" name="title"
                 value="<?php echo $book->title ?>">
               <span class="text-danger"><?php echo $v->get_error_message('title'); ?></span>
@@ -116,37 +116,37 @@ echo "du klickade på en product: " . $id;
             </div>
 
             <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
+              <label for="description" class="form-label">Beskriving</label>
               <textarea class="form-control" id="description" name="description" rows="4"><?php echo $book->description; ?></textarea>
             </div>
 
             <div class="mb-3">
-              <label for="price" class="form-label">Price</label>
+              <label for="price" class="form-label">Pris</label>
               <input type="number" class="form-control" id="price" name="price"
                 value="<?php echo $book->price ?>">
               <span class="text-danger"><?php echo $v->get_error_message('price'); ?></span>
             </div>
 
             <div class="mb-3">
-              <label for="stock" class="form-label">Stock</label>
+              <label for="stock" class="form-label">Lager</label>
               <input type="number" class="form-control" id="stock" name="stock"
                 value="<?php echo $book->stock ?>">
               <span class="text-danger"><?php echo $v->get_error_message('stock'); ?></span>
             </div>
 
             <div class="mb-4">
-              <label for="author" class="form-label">Author</label>
+              <label for="author" class="form-label">Författare</label>
               <input type="text" class="form-control" id="author" name="author"
                 value="<?php echo $book->author ?>">
             </div>
 
             <div class="d-grid gap-2">
               <button type="submit" class="btn btn-dark btn-lg">
-                Save Changes
+                Spara Ändringar.
               </button>
 
               <a href="/admin" class="btn btn-outline-secondary">
-                Cancel
+                Avbryt
               </a>
             </div>
 

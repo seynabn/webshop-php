@@ -46,7 +46,7 @@ $books = $database->getAllBooks($sort, $order, $limit, $offset);
                         <a href="admin?sort=title&order=asc">
                             <i class="bi bi-sort-up"></i>
                         </a>
-                        Title
+                        Titel
                         <a href="admin?sort=title&order=desc">
                             <i class="bi bi-sort-down"></i>
                         </a>
@@ -56,7 +56,7 @@ $books = $database->getAllBooks($sort, $order, $limit, $offset);
                         <a href="admin?sort=title&order=asc">
                             <i class="bi bi-sort-up"></i>
                         </a>
-                        Description
+                        Beskrivning
                         <a href="admin?sort=title&order=desc">
                             <i class="bi bi-sort-down"></i>
                         </a>
@@ -66,7 +66,7 @@ $books = $database->getAllBooks($sort, $order, $limit, $offset);
                         <a href="admin?sort=price&order=asc">
                             <i class="bi bi-sort-up"></i>
                         </a>
-                        Price
+                        Pris
                         <a href="admin?sort=price&order=desc">
                             <i class="bi bi-sort-down"></i>
                         </a>
@@ -76,7 +76,7 @@ $books = $database->getAllBooks($sort, $order, $limit, $offset);
                         <a href="admin?sort=stock&order=asc">
                             <i class="bi bi-sort-up"></i>
                         </a>
-                        Stock
+                        Lager
                         <a href="admin?sort=stock&order=desc">
                             <i class="bi bi-sort-down"></i>
                         </a>
@@ -104,8 +104,8 @@ $books = $database->getAllBooks($sort, $order, $limit, $offset);
 
 
                             <td>
-                                <a href="/admin/edit?id=<?php echo $book->id ?>" class="btn btn-primary mb-1">EDIT</a>
-                                <a href="/admin/new?id=<?php echo $book->id ?>" class="btn btn-primary mt-1">CREATE</a>
+                                <a href="/admin/edit?id=<?php echo $book->id ?>" class="btn btn-dark mt-1 mb-1">Ändra</a>
+                                <a href="/admin/new?id=<?php echo $book->id ?>" class="btn btn-dark mt-1 mb-1">Skapa</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -113,14 +113,24 @@ $books = $database->getAllBooks($sort, $order, $limit, $offset);
                 </tbody>
             </table>
         </div>
-        	<div>
-	    <a href="?page=<?php echo $page - 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">⬅️ Prev</a>
+        	 <div class="d-flex justify-content-center gap-3 mt-4">
+                 <?php if($page > 1): ?>
+	    <a class="btn btn-dark"  href="?page=<?php echo $page - 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>"> ⬅️ Föregånde
+        </a>
+        <?php endif; ?>
 	
-	    <span>Sida <?php echo $page; ?></span>
+	   <span class="align-self-center">
+    Sida <?php echo $page; ?>
+</span>
 	
-	    <a href="?page=<?php echo $page + 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>">Next ➡️</a>
-	</div>
-	
+	    <a class="btn btn-dark"  href="?page=<?php echo $page + 1; ?>&sort=<?php echo $sort; ?>&order=<?php echo $order; ?>"> Nästa ➡️
+    </a>
+</div>
+
+   
+
+   
+
 
     </section>
     <!-- Footer-->

@@ -93,19 +93,19 @@ echo "du klickade på en product: " . $id;
 
         <div class="card shadow border-0 rounded-4 p-4">
 
-          <h1 class="fw-bold mb-4 text-center">Create New Product</h1>
+          <h1 class="fw-bold mb-4 text-center">Skapa ny produkt</h1>
 
           <form method="POST">
 
             <div class="mb-3">
-              <label class="form-label">Title</label>
+              <label class="form-label">Titel</label>
               <input type="text" name="title" class="form-control"
                value="<?php echo $_POST['title'] ?? '' ?>"
               <span class="text-danger"> <?php echo $v->get_error_message('title'); ?></span>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Category</label>
+              <label class="form-label">Genre</label>
               <select name="genre_id" class="form-select">
                 <?php foreach ($allCategories as $category): ?>
                   <option value="<?php echo $category->id; ?>">
@@ -116,34 +116,34 @@ echo "du klickade på en product: " . $id;
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Description</label>
+              <label class="form-label">Beskrivning</label>
               <textarea name="description" class="form-control" rows="4"><?php echo $book->description; ?></textarea>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Author</label>
+              <label class="form-label">Författare</label>
               <input type="text" name="author" class="form-control"
                 value="<?php echo $book->author ?>">
               <span class="text-danger"><?php echo $v->get_error_message('author'); ?></span>
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Price</label>
+              <label class="form-label">Pris</label>
               <input type="number" name="price" class="form-control"
                 value="<?php echo $book->price ?>">
               <span class="text-danger"><?php echo $v->get_error_message('price'); ?></span>
             </div>
 
             <div class="mb-4">
-              <label class="form-label">Stock</label>
+              <label class="form-label">Lager</label>
               <input type="number" name="stock" class="form-control"
                 value="<?php echo $book->stock ?>">
               <span class="text-danger"><?php echo $v->get_error_message('stock'); ?></span>
             </div>
 
             <div class="d-grid gap-2">
-              <button class="btn btn-dark btn-lg">Create Product</button>
-              <a href="/admin" class="btn btn-outline-secondary">Cancel</a>
+              <button class="btn btn-dark btn-lg">Skapa Produkt</button>
+              <a href="/admin" class="btn btn-outline-secondary">Avbryt</a>
             </div>
 
           </form>
