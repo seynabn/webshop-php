@@ -4,8 +4,6 @@ require_once("models/Book.php");
 require_once("models/Database.php");
 
 
-
-
 require_once("components/HeadComponent.php");
 require_once("components/NavComponent.php");
 require_once("components/HeaderComponent.php");
@@ -15,8 +13,9 @@ require_once("components/FooterComponent.php");
 $database = new Database();
 $cart = new Cart($database, session_id());
 $cartItems = $cart->getItems();
+$antalICart= $cart->getItemsCount();
 
-  ?>
+?>
 
 
 
@@ -28,80 +27,67 @@ $cartItems = $cart->getItems();
 
 <body>
 
-<?php NavComponent(); ?>
+  <?php NavComponent(); ?>
 
-<?php HeaderComponent(); ?>
+  <?php HeaderComponent(); ?>
 
-<section class="py-5">
+  <section class="py-5">
 
-<div class="container">
+    <div class="container">
 
-<h1>Your Cart</h1>
+      <h1>Varukorg</h1>
 
-<table class="table">
+      <table class="table">
 
-<thead>
+        <thead>
 
-<tr>
-<th>Product</th>
-<th>Price</th>
-<th>Quantity</th>
-<th>Total</th>
-</tr>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
 
-</thead>
+        </thead>
 
-<tbody>
+        <tbody id="cartItem">
 
-<?php foreach($cartItems as $item): ?>
+         
 
-<tr>
+        </tbody> 
 
-<td>
-<?php echo $item->productName; ?>
-</td>
+      </table>
 
-<td>
-<?php echo $item->productPrice; ?> SEK
-</td>
+      <tr>
+        <td colspan="3">
+          Total:
+        </td>
+        <td id="cartTotalPrice"><?php echo $cart->getTotalPrice(); ?> SEK</td>
+        <tfoot>
 
-<td>
-<?php echo $item->quantity; ?>
-</td>
+        <td><a href="/checkout" class="btn btn-success">Checkout</a></td>
+      </tr>
+      </tfoot>
+     </table>
 
-<td>
-<?php echo $item->rowPrice; ?> SEK
-</td>
-     <td>
-                       
-
-        <a href="/addToCart?productId=<?php echo $item->productId ?>&fromPage=<?php echo urlencode((empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]") ?>" class="btn btn-primary">+</a>                                            
-                                    <a href="/removeFromCart?productId=<?php echo $item->productId ?>&fromPage=<?php echo urlencode((empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]") ?>" class="btn btn-danger">-</a>                                            
-                                    <a href="/removeFromCart?removeCount=<?php echo $item->quantity ?>&productId=<?php echo $item->productId ?>&fromPage=<?php echo urlencode((empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]") ?>" class="btn btn-danger">DELETE ALL</a>  
-                                    
-                                    </td>
-</tr>
-
-<?php endforeach; ?>
-
-</tbody>
-
-</table>
-
-<h3>
-Total:
-<?php echo $cart->getTotalPrice(); ?> SEK
-</h3>
+        <script>
+            // när sidan laddas så rendera cart items i tabellen
+            document.addEventListener("DOMContentLoaded", async function() {
+                const data = await fetchCartItems();
+                drawCart(data.cartItems, data.cartTotalPrice);
+            });
+        </script>
 
 
 
 
 
-</div>
+    </div>
 
-</section>
+  </section>
 
-<?php FooterComponent(); ?>
+  <?php FooterComponent(); ?>
 
 </body>
+
 </html>

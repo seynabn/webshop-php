@@ -77,9 +77,12 @@ $database=new Database();
         <!-- STOCK -->
         <p class="text-muted">I lager: <?php echo $book->stock ?></p>
 
+
+
+        
         <!-- BUTTON -->
         <div class="d-flex">
-             <a class="btn btn-dark flex-shrink-0" href="addtocart?id=<?php echo $book->id; ?>">
+             <a class="btn btn-dark flex-shrink-0" onclick="addToCart(<?php echo $book->id; ?>)">
                         Add to cart!
                     </a>
         </div>

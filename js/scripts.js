@@ -1,27 +1,50 @@
-/*!
- * Start Bootstrap - Shop Homepage v5.0.6 (https://startbootstrap.com/template/shop-homepage)
- * Copyright 2013-2023 Start Bootstrap
- * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-shop-homepage/blob/master/LICENSE)
- */
-// This file is intentionally blank
-// Use this file to add JavaScript to your project
 
-const sortSelect = document.getElementById("sortselect");
-if (sortSelect) {
-  sortSelect.addEventListener("change", function () {
-    // this value innehåller ju <sort>-<order>
-    //sort=title
-    //order=asc
-    const [sort, order] = this.value.split("-");
-    // bygg url
-    //window.location.search- är current url query string.
-    const urlsearchparams = new URLSearchParams(window.location.search);
-    urlsearchparams.set("sort", sort);
-    urlsearchparams.set("order", order);
-
-    // alert("selected value: " + this.value);
-    // alert("selected value: " + sort + "" + order);
-
-     window.location.search = urlsearchparams.toString();
-  });
+function drawCart(cartItems, cartTotalPrice) {
+    const cartTotalPriceElement = document.getElementById('cartTotalPrice');
+    if (cartTotalPriceElement) {
+        document.getElementById('cartTotalPrice').innerText = cartTotalPrice;
+    }
+    const cartItemElement = document.getElementById('cartItem');
+    if (cartItemElement) {
+        cartItemElement.innerHTML = "";
+        // Rita om hela carten
+        cartItems.forEach(cartItem => {
+            cartItemElement.innerHTML += `
+                <tr>
+                    <td>${cartItem.productName}</td>
+                    <td>${cartItem.productPrice}</td>
+                    <td>${cartItem.quantity}</td>   
+                    <td>${cartItem.productPrice * cartItem.quantity}.00</td>
+                    <td>
+                        <a  onclick="addToCart(${cartItem.productId})"   class="btn btn-primary">+</a>
+                        <a  onclick="removeFromCart(${cartItem.productId})"   class="btn btn-danger">-</a>
+                    </td>
+                </tr>
+            `;
+        });
+    }
 }
+// fetch cart
+
+async function fetchCartItems() {
+    let resp = await fetch('/javascriptFetchCart');
+    let data = await resp.json();
+    console.log(data);
+    return data;
+}
+// remove from cart btn
+async function removeFromCart(productId) {
+    let resp = await fetch(`/javascriptRemoveFromCart?id=${productId}`);
+    let data = await resp.json();
+    document.getElementById('cartItemCount').innerText = data.cartItemCount;
+    drawCart(data.cartItems, data.cartTotalPrice);
+}
+// add to cart btn
+async function addToCart(productId) { 
+    let resp = await fetch(`/javascriptAddToCart?id=${productId}`);
+    let data = await resp.json();
+    document.getElementById('cartItemCount').innerText = data.cartItemCount;
+    drawCart(data.cartItems, data.cartTotalPrice);
+}
+
+

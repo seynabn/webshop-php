@@ -59,10 +59,26 @@ $router->addRoute('/accountregister', function () {
     require_once(__DIR__ . "/Pages/AccountRegister.php");
 });
 
-// cart
+// cart-page
 $router->addRoute("/addtocart", function () {
   require_once(__DIR__ . "/Pages/AddToCart.php");
 });
+//cart- JAVASCRIPT.
+$router->addRoute("/javascriptAddToCart", function () {
+  require_once(__DIR__ . "/API/addtocart.php");
+});
+//cart-page 
+$router->addRoute('/removeFromCart', function () { // Betyder ta bort EN 
+        require_once( __DIR__ .'/Pages/removeFromCart.php');
+    });
+//cart- JAVASCRIPT.
+$router->addRoute("/javascriptRemoveFromCart", function () {
+  require_once(__DIR__ . "/API/RemoveFromCart.php");
+});
+//fetch- JAVASCRIPT.
+$router->addRoute('/javascriptFetchCart', function () { // Betyder ta bort EN 
+        require_once( __DIR__ .'/API/FetchCart.php');
+    });
 
 // cart
 $router->addRoute("/viewcart", function () {
@@ -73,9 +89,7 @@ $router->addRoute("/checkout", function () {
   require_once(__DIR__ . "/Pages/checkout.php");
 });
 
-$router->addRoute('/removeFromCart', function () { // Betyder ta bort EN 
-        require_once( __DIR__ .'/Pages/removeFromCart.php');
-    });
+
 
     
 $router->dispatch();

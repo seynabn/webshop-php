@@ -23,8 +23,10 @@ $database = new Database();
 
 $popularBooks = $database->getPopularBooks();
 
+// ett annat sätt att rita ut antalet i cart.
 
-// $cart=new cart($database,session_id());
+// $cart = new Cart($database, session_id());
+// $antalICart = $cart->getItemsCount();
 
 
 ?>
@@ -34,39 +36,40 @@ $popularBooks = $database->getPopularBooks();
 <!DOCTYPE html>
 <html lang="en">
 
-<?php  HeadComponent();?>
+<?php HeadComponent(); ?>
 
 <body>
 
-<!-- NAV -->
-<?php NavComponent();?>
+    <!-- NAV -->
+    <?php NavComponent(); ?>
 
-<!-- HEADER -->
-<!-- HEADER -->
-<?php HeaderComponent(); ?>
- <div class="d-flex justify-content-center gap-3 mt-4">
-<h1>Populära böcker just nu!</h1>
-</div>
-<section class="py-5">
-<div class="container px-4 px-lg-5 mt-5">
+    <!-- HEADER -->
+    <!-- HEADER -->
+    <?php HeaderComponent(); ?>
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <h1>Populära böcker just nu!</h1>
+    </div>
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
 
-<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-<!-- slut här -->
+                <!-- slut här -->
 
-<!-- PRODUCTS CARDS-->
-<?php foreach ($popularBooks as $book): ?>
-    <?php ProductComponent($book); ?>
-<?php endforeach; ?>
+                <!-- PRODUCTS CARDS-->
+                <?php foreach ($popularBooks as $book): ?>
+                    <?php ProductComponent($book); ?>
+                <?php endforeach; ?>
 
-</div>
-</div>
-</section>
+            </div>
+        </div>
+    </section>
 
-<!-- FOOTER -->
-<?php
-FooterComponent();
-?>
+    <!-- FOOTER -->
+    <?php
+    FooterComponent();
+    ?>
 
 </body>
+
 </html>

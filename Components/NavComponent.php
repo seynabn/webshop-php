@@ -1,6 +1,7 @@
 <?php
 require_once("models/Database.php");
 require_once("models/Cart.php");
+require_once("models/CartItem.php");
 function NavComponent()
 {
   $database = new Database();
@@ -82,9 +83,9 @@ function NavComponent()
               <a class="btn btn-outline-dark " href="/viewcart">
                 Varukorg
 
-          
-            <i class="bi-cart-fill me-1"><span class="badge bg-dark text-white ms-1 rounded-pill">
-               <?php echo $cart->getItemsCount(); ?>
+             <!-- här idag -->
+            <i class="bi-cart-fill me-1"><span class="badge bg-dark text-white ms-1 rounded-pill" id="cartItemCount">
+               
             </span></i>
        
            
