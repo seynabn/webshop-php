@@ -71,7 +71,7 @@ $freightRules = $database->getAllFreightRules();
             </select>
 
           </form>
-
+                     <!-- du kan ta bort denna totalen då den blir den totala summan av fraktkostnad + produkttotalen -->
           <tr>
             <td colspan="3">
               TOTAL:
@@ -109,7 +109,7 @@ $freightRules = $database->getAllFreightRules();
 
 
 
-      <td><a href="/checkout" class="btn btn-success mt-3">Betala</a></td>
+      <td><a onclick="onPay()" class="btn btn-success mt-3">Betala</a></td>
       </tr>
 
     </div>
@@ -122,7 +122,7 @@ $freightRules = $database->getAllFreightRules();
     // när sidan laddas så rendera cart items i tabellen
     document.addEventListener("DOMContentLoaded", async function () {
       const data = await fetchCartItems();
-      drawCart(data.cartItems, data.cartTotalPrice, data.cartTotalWeight,data.freightCost);
+      drawCart(data.cartItems, data.cartTotalPrice, data.cartTotalWeight, data.freightCost);
     });
 
 
@@ -137,8 +137,17 @@ $freightRules = $database->getAllFreightRules();
             drawCart(data.cartItems, data.cartTotalPrice, data.cartTotalWeight, data.freightCost);
           });
       }
-      
+
     });
+
+   function onPay(){
+                const selectedRulesId =   freightRulesSelect.value; // den valda
+                // vi ska sätta url till /checkout?ruleid=<deb valda ruleidt>
+                const url = '/checkout?ruleid=' + selectedRulesId;
+                window.location = url;
+            }
+
+
   </script>
 
 </body>
