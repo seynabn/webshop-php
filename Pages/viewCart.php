@@ -71,7 +71,7 @@ $freightRules = $database->getAllFreightRules();
             </select>
 
           </form>
-                     <!-- du kan ta bort denna totalen då den blir den totala summan av fraktkostnad + produkttotalen -->
+          <!-- du kan ta bort denna totalen då den blir den totala summan av fraktkostnad + produkttotalen -->
           <tr>
             <td colspan="3">
               TOTAL:
@@ -139,13 +139,17 @@ $freightRules = $database->getAllFreightRules();
       }
 
     });
+    
+    function onPay() {
 
-   function onPay(){
-                const selectedRulesId =   freightRulesSelect.value; // den valda
-                // vi ska sätta url till /checkout?ruleid=<deb valda ruleidt>
-                const url = '/checkout?ruleid=' + selectedRulesId;
-                window.location = url;
-            }
+      const selectedRulesId = freightRulesSelect.value;
+
+      const url =
+        '/checkout?ruleid=' + selectedRulesId;
+
+      window.location = url;
+    }
+
 
 
   </script>
