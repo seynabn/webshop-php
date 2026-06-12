@@ -1,3 +1,5 @@
+
+
 <?php
 
 class Book
@@ -13,5 +15,7 @@ class Book
     public $stock; // när boken skapades
     public $description; // beskrivning
     public $image;      // bild (skapas i SQL)
+
+    public $weight; //bokens vikt
 
 }

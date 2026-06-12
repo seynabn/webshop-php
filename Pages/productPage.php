@@ -23,7 +23,6 @@ if (!$id) {
 $book = $database->getBook($id);
 ?>
 
-
 <!-- $id=$_GET["id"];
 echo "du klickade på  en product: " . $id;
 
@@ -79,7 +78,7 @@ $database=new Database();
 
 
 
-        
+
         <!-- BUTTON -->
         <div class="d-flex">
              <a class="btn btn-dark flex-shrink-0" onclick="addToCart(<?php echo $book->id; ?>)">

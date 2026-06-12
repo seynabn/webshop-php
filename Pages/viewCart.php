@@ -2,7 +2,8 @@
 ob_start();
 require_once("models/Book.php");
 require_once("models/Database.php");
-
+require_once("models/Cart.php");
+require_once("models/CartItem.php");
 
 require_once("components/HeadComponent.php");
 require_once("components/NavComponent.php");
@@ -12,8 +13,8 @@ require_once("components/FooterComponent.php");
 
 $database = new Database();
 $cart = new Cart($database, session_id());
-$cartItems = $cart->getItems();
-$antalICart= $cart->getItemsCount();
+$freightRules = $database->getAllFreightRules();
+
 
 ?>
 
@@ -50,43 +51,95 @@ $antalICart= $cart->getItemsCount();
 
         </thead>
 
-        <tbody id="cartItem">
+        <tbody id="cartItems"></tbody>
 
-         
+        <tfoot>
 
-        </tbody> 
+
+          <form method="post" action="/checkout">
+            <label for="shippingZone">Fraktzon</label>
+
+            <select name="shippingZone" id="freightRulesSelect" class="form-select">
+
+              <option value="">Välj frakt alternativ</option>
+              <?php
+              $freightRules = $database->getAllFreightRules();
+              foreach ($freightRules as $rule) {
+                echo "<option value='$rule->id'>$rule->zone_name - $rule->base_fee kr + $rule->weight_modifier kr/kg</option>";
+              }
+              ?> ?>
+            </select>
+
+          </form>
+
+          <tr>
+            <td colspan="3">
+              TOTAL:
+            </td>
+            <td id="cartTotalPrice"><?php echo $cart->getTotalPrice(); ?> SEK</td>
+
+
+          <tr>
+            <td colspan="3">
+              FRAKT:
+            </td>
+
+            <td id="freightCost">0 SEK</td>
+          </tr>
+
+          <tr>
+            <td colspan="3">
+              FRAKT + PRODUKT:
+            </td>
+            <td id="grandTotal">
+              <?= $cart->getTotalPrice(); ?> SEK
+            </td>
+          </tr>
+
+
+        </tfoot>
+
+
+
+
+
 
       </table>
 
-      <tr>
-        <td colspan="3">
-          Total:
-        </td>
-        <td id="cartTotalPrice"><?php echo $cart->getTotalPrice(); ?> SEK</td>
-        <tfoot>
 
-        <td><a href="/checkout" class="btn btn-success">Checkout</a></td>
+
+
+      <td><a href="/checkout" class="btn btn-success mt-3">Betala</a></td>
       </tr>
-      </tfoot>
-     </table>
-
-        <script>
-            // när sidan laddas så rendera cart items i tabellen
-            document.addEventListener("DOMContentLoaded", async function() {
-                const data = await fetchCartItems();
-                drawCart(data.cartItems, data.cartTotalPrice);
-            });
-        </script>
-
-
-
-
 
     </div>
 
   </section>
 
   <?php FooterComponent(); ?>
+
+  <script>
+    // när sidan laddas så rendera cart items i tabellen
+    document.addEventListener("DOMContentLoaded", async function () {
+      const data = await fetchCartItems();
+      drawCart(data.cartItems, data.cartTotalPrice, data.cartTotalWeight,data.freightCost);
+    });
+
+
+    const freightRulesSelect = document.getElementById('freightRulesSelect');
+    freightRulesSelect.addEventListener('change', function () {
+      const selectedFreightRuleId = this.value;
+
+      if (selectedFreightRuleId) {
+        fetch(`/calculateShipping?id=${selectedFreightRuleId}`)
+          .then(response => response.json())
+          .then(data => {
+            drawCart(data.cartItems, data.cartTotalPrice, data.cartTotalWeight, data.freightCost);
+          });
+      }
+      
+    });
+  </script>
 
 </body>
 

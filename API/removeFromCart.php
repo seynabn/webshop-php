@@ -15,13 +15,28 @@ $cart = new Cart($database, session_id());
 $cart->removeItem($productIdToRemove, 1);
 
 
+$cart = new Cart($database, session_id());
+
+$freightRuleId = $_GET['ruleId'] ?? null;
+if ($freightRuleId && $freightRuleId!='null') {
+    $freightRule = $database->getFreightRule($freightRuleId);
+    $freightCost = $cart->calculateFreightCost($freightRule);
+
+} else {
+    $freightCost = 0;
+}
+
 
 echo json_encode([
     'success' => true,
     'message' => "Product $productIdToRemove removed from cart",
     'cartItemCount' => $cart->getItemsCount(),
-    'cartTotalPrice' => $cart->getTotalPrice(),
     "cartItems" => $cart->getItems(),
+  "cartTotalPrice" => $cart->getTotalPrice() + $freightCost,
+  "cartTotalWeight" => $cart->getTotalWeight(),
+  "freightCost" => $freightCost
+    
+    
 ]);
 
 

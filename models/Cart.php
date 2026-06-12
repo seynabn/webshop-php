@@ -1,52 +1,61 @@
+
+
+
 <?php
 
-class Cart {
+class Cart
+{
     private $dbContext;
     private $session_id;
     private $userId;
     private $cartItems = [];
 
-    public function __construct($dbContext, $session_id, $userId = null) {
+    public function __construct($dbContext, $session_id, $userId = null)
+    {
         $this->dbContext = $dbContext;
         $this->session_id = $session_id;
         $this->userId = $userId;
-        $this->cartItems = $this->dbContext->getCartItems($userId,$session_id);
+        $this->cartItems = $this->dbContext->getCartItems($userId, $session_id);
 
     }
 
-    public function convertSessionToUser($userId, $newSessionId) {
+    public function convertSessionToUser($userId, $newSessionId)
+    {
         $this->dbContext->convertSessionToUser($this->session_id, $userId, $newSessionId);
-      
+
         $this->userId = $userId;
         $this->session_id = $newSessionId;
     }
 
-    public function addItem($productId, $quantity) {
+    public function addItem($productId, $quantity)
+    {
         $item = $this->getCartItem($productId);
         if (!$item) {
             $item = new CartItem();
             $item->productId = $productId;
             $item->quantity = $quantity;
             array_push($this->cartItems, $item);
-        }else{
+        } else {
             $item->quantity += $quantity;
         }
-        $this->dbContext->updateCartItem($this->userId,$this->session_id, $productId, $item->quantity);
+        $this->dbContext->updateCartItem($this->userId, $this->session_id, $productId, $item->quantity);
     }
 
-    public function removeItem($productId, $quantity) {
+    public function removeItem($productId, $quantity)
+    {
         $item = $this->getCartItem($productId);
-        if( !$item) {
+        if (!$item) {
             return;
         }
         $item->quantity -= $quantity;
-        $this->dbContext->updateCartItem($this->userId,$this->session_id, $productId, $item->quantity);
+        $this->dbContext->updateCartItem($this->userId, $this->session_id, $productId, $item->quantity);
         if ($item->quantity <= 0) {
             array_splice($this->cartItems, array_search($item, $this->cartItems), 1);
         }
     }
 
-    public function getCartItem($productId) {
+    public function getCartItem($productId)
+    {
         foreach ($this->cartItems as $item) {
             if ($item->productId == $productId) {
                 return $item;
@@ -56,7 +65,8 @@ class Cart {
     }
 
 
-    public function getItemsCount() {
+    public function getItemsCount()
+    {
         $count = 0;
         foreach ($this->cartItems as $item) {
             $count += $item->quantity;
@@ -65,7 +75,8 @@ class Cart {
         //return count($this->cartItems);
     }
 
-    public function getTotalPrice() {
+    public function getTotalPrice()
+    {
         $total = 0;
         foreach ($this->cartItems as $item) {
             $total += $item->rowPrice;
@@ -73,14 +84,43 @@ class Cart {
         return $total;
     }
 
-
-    public function getItems() {
+       public function getItems()
+    {
         return $this->cartItems;
     }
 
-    public function clearCart() {
+
+    public function clearCart(){
+        $this->dbContext->clearCart($this->userId, $this->session_id);
         $this->cartItems = [];
     }
+
+
+       // vikt och frakt.
+      public function getTotalWeight()
+    {
+        $total = 0;
+        foreach ($this->cartItems as $item) {
+            $total += $item->weight * $item->quantity;
+        }
+        return $total;
+    }
+
+      public function calculateShippingCost($freightRule) {
+        $totalWeight = $this->getTotalWeight();
+        $totalPrice = $this->getTotalPrice();
+
+        if ($totalPrice >= $freightRule->free_shipping_threshold) {
+            return 0;
+        }
+
+        return $freightRule->base_fee + ($totalWeight * $freightRule->weight_modifier);
+    }
+
+
+  
+
+
 }
 
 

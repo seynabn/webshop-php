@@ -89,7 +89,17 @@ $router->addRoute("/checkout", function () {
   require_once(__DIR__ . "/Pages/checkout.php");
 });
 
+$router->addRoute("/checkoutsuccess", function () {
+  require_once(__DIR__ . "/Pages/checkoutsuccess.php");
+});
 
+$router->addRoute("/readfreightrules", function () {
+  require_once(__DIR__ . "/integration/readfreightrules.php");
+});
+
+$router->addRoute("/calculateShipping", function () {
+  require_once(__DIR__ . "/API/calculateshipping.php");
+});
 
     
 $router->dispatch();

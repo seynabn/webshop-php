@@ -1,4 +1,3 @@
-<!-- DENNA FIL HÄMTAR ALLA BÖCKER DATA FRÅN OBJEKTET -->
 
 
 <?php

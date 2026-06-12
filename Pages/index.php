@@ -1,4 +1,4 @@
-<!-- DENNA FIL HÄMTAR DATA FRÅN OBJEKTET -->
+
 
 
 <?php

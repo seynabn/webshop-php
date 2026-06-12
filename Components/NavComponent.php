@@ -85,7 +85,7 @@ function NavComponent()
 
              <!-- här idag -->
             <i class="bi-cart-fill me-1"><span class="badge bg-dark text-white ms-1 rounded-pill" id="cartItemCount">
-               
+                   <?php echo $cart-> getItemsCount(); ?>
             </span></i>
        
            

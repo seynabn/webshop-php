@@ -4,6 +4,8 @@ require_once("models/Category.php");
 require_once("models/Book.php");
 require_once("models/UserDatabase.php");
 require_once("models/CartItem.php");
+require_once("models/FreightRule.php");
+
 
 
 
@@ -136,6 +138,7 @@ author,
 price,
 description,
 stock,
+weight,
 CONCAT(
     'https://dummyimage.com/450x300/000/fff&text=',
     REPLACE(title, ' ', '+')
@@ -157,7 +160,7 @@ LIMIT :limit OFFSET :offset
   }
 
   function countSearchBooks($q)
-{
+  {
     $query = $this->pdo->prepare("
         SELECT COUNT(*) 
         FROM books
@@ -166,18 +169,18 @@ LIMIT :limit OFFSET :offset
     ");
 
     $query->execute([
-        'q' => "%$q%"
+      'q' => "%$q%"
     ]);
 
     return $query->fetchColumn();
-}
+  }
 
 
 
   // SORTERAR MEST POPULÄRA PRODUKTER.
   function getPopularBooks()
   {
-    $query = $this->pdo->query("SELECT id, genre_id, description, title,stock,price,
+    $query = $this->pdo->query("SELECT id, genre_id, description, title,stock,price,weight,
     CONCAT(
                 'https://dummyimage.com/450x300/000/fff&text=',
                 REPLACE(title, ' ', '+')
@@ -214,7 +217,7 @@ LIMIT :limit OFFSET :offset
     $sort = in_array($sort, $allowedSort) ? $sort : 'title';
     $order = in_array($order, $allowedOrder) ? $order : 'asc';
 
-    $query = $this->pdo->prepare("SELECT id ,genre_id,description, title,price,stock,
+    $query = $this->pdo->prepare("SELECT id ,genre_id,description, title,price,stock,weight,
      CONCAT(
                     'https://dummyimage.com/450x300/000/fff&text=',
                     REPLACE(title, ' ', '+')
@@ -236,7 +239,7 @@ LIMIT :limit OFFSET :offset
   function saveProduct($book)
   {
     //update
-    $query = $this->pdo->prepare("update books set title=:title, description=:description, price=:price, stock=:stock, author=:author, genre_id=:genre_id where id=:id");
+    $query = $this->pdo->prepare("update books set title=:title, description=:description, price=:price, stock=:stock, author=:author, weight=:weight, genre_id=:genre_id where id=:id");
     $query->execute([
       "title" => $book->title,
       "genre_id" => $book->genre_id,
@@ -244,7 +247,9 @@ LIMIT :limit OFFSET :offset
       "price" => $book->price,
       "stock" => $book->stock,
       "author" => $book->author,
-      "id" => $book->id
+      "id" => $book->id,
+      "weight" => $book->weight,
+
     ]);
 
   }
@@ -252,7 +257,7 @@ LIMIT :limit OFFSET :offset
   function createProduct($book)
   {
     //update
-    $query = $this->pdo->prepare("insert into books (title, description, price, stock, author, genre_id) values(:title,:description,:price,:stock,:author,:genre_id)");
+    $query = $this->pdo->prepare("insert into books (title, description, price, stock, author,weight, genre_id) values(:title,:description,:price,:stock,:author,:weight,:genre_id)");
     $query->execute([
       "title" => $book->title,
       "genre_id" => $book->genre_id,
@@ -260,6 +265,7 @@ LIMIT :limit OFFSET :offset
       "price" => $book->price,
       "stock" => $book->stock,
       "author" => $book->author,
+      "weight" => $book->weight,
     ]);
 
   }
@@ -271,7 +277,7 @@ LIMIT :limit OFFSET :offset
       $query->execute(['sessionId' => $sessionId, 'userId' => $userId]);
     }
 
-    $query = $this->pdo->prepare("SELECT CartItem.Id as id, CartItem.productId, CartItem.quantity, books.title as productName, books.price as productPrice, books.price * CartItem.quantity as rowPrice     FROM CartItem  JOIN books ON books.id = CartItem.productId WHERE userId=:userId or sessionId = :sessionId");
+    $query = $this->pdo->prepare("SELECT CartItem.Id as id, CartItem.productId, CartItem.quantity, books.title as productName, books.price as productPrice, books.weight, books.price * CartItem.quantity as rowPrice     FROM CartItem  JOIN books ON books.id = CartItem.productId WHERE userId=:userId or sessionId = :sessionId");
     $query->execute(['sessionId' => $sessionId, 'userId' => $userId]);
 
 
@@ -301,6 +307,112 @@ LIMIT :limit OFFSET :offset
       $query->execute(['userId' => $userId, 'sessionId' => $sessionId, 'productId' => $productId, 'quantity' => $quantity]);
     }
   }
+
+  public function clearCart($userId, $sessionId)
+  {
+    $query = $this->pdo->prepare("
+        DELETE FROM CartItem
+        WHERE userId = :userId
+        OR sessionId = :sessionId
+    ");
+
+    $query->execute([
+      'userId' => $userId,
+      'sessionId' => $sessionId
+    ]);
+  }
+
+
+  // FRAKT:
+  function getAllFreightRules()
+  {
+    $query = $this->pdo->query("SELECT id, zone_code, zone_name, base_fee  weight_modifier, free_shipping_threshold FROM freight_rules");
+    $freightRules = $query->fetchAll(PDO::FETCH_CLASS, "FreightRule");
+    return $freightRules;
+  }
+
+
+
+  public function updateFreightRule($zone_code, $zone_name, $base_fee, $weight_modifier, $free_shipping_threshold)
+  {
+
+    $query = $this->pdo->prepare("INSERT INTO freight_rules (zone_code, zone_name, base_fee, weight_modifier," .
+      " free_shipping_threshold) VALUES (:zoneCode, :zoneName, :baseFee, :weight_modifier, :free_shipping_threshold)" .
+      " ON DUPLICATE KEY UPDATE zone_name=:zoneName, base_fee=:baseFee, weight_modifier=:weight_modifier, free_shipping_threshold=:free_shipping_threshold");
+
+    $query->execute([
+      'id' => id,
+      'zone_code' => $zone_code,
+      'zone_name' => $zone_name,
+      'base_fee' => $base_fee,
+      'weight_modifier' => $weight_modifier,
+      'free_shipping_threshold' => $free_shipping_threshold
+
+
+    ]);
+  }
+
+  public function insertFreightRule($rule)
+  {
+    $query = $this->pdo->prepare("
+        INSERT INTO freight_rules
+        (zone_code,zone_name, base_fee, weight_modifier,free_shipping_threshold)
+        VALUES
+        (:zone_code,:zone_name,:base_fee, :weight_modifier, :free_shipping_threshold)
+    ");
+
+    $query->execute([
+      'zone_code' => $rule->zone_code,
+      'zone_name' => $rule->zone_name,
+      'base_fee' => $rule->base_fee,
+      'weight_modifier' => $rule->weight_modifier,
+      'free_shipping_threshold' => $rule->free_shipping_threshold
+
+    ]);
+  }
+
+
+  // räknar ut den totala vikten:
+
+  public function getCartWeight($userId, $sessionId)
+  {
+    $query = $this->pdo->prepare("
+        SELECT SUM(books.weight * CartItem.quantity)
+        FROM CartItem
+        JOIN books ON books.id = CartItem.productId
+        WHERE userId = :userId
+        OR sessionId = :sessionId
+    ");
+
+    $query->execute([
+      'userId' => $userId,
+      'sessionId' => $sessionId
+    ]);
+
+    return $query->fetchColumn() ?? 0;
+  }
+
+
+  // hämtar den valda frakt regeln:
+
+  public function getFreightRule($id)
+  {
+    $query = $this->pdo->prepare("
+        SELECT *
+        FROM freight_rules
+        WHERE id = :id
+    ");
+
+    $query->execute([
+      'id' => $id
+    ]);
+
+    $query->setFetchMode(PDO::FETCH_CLASS, "FreightRule");
+
+    return $query->fetch();
+  }
+
+
 
 
 

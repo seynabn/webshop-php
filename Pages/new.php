@@ -1,3 +1,5 @@
+
+
 <?php
 ob_start();
 require_once("models/Book.php");
@@ -51,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {// HAR MAN SUBMITTAT FORM??
     header("Location: /admin"); // Hoppa till denna sida = redirect
     exit; // KLAR KÖR INTE MER I DENNA FIL
   }
-
+  //  hdjebfeuªç
 
 
 echo 'du har skapat en ny product';
